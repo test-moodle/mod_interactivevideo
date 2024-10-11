@@ -531,7 +531,6 @@ class mod_interactivevideo_mod_form extends moodleform_mod {
      * @param array $data
      *
      * @return bool
-    
      */
     public function completion_rule_enabled($data) {
         return !empty($data['completionpercentageenabled']) && $data['completionpercentage'] > 0;
