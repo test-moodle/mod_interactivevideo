@@ -42,4 +42,4 @@ $addons = [
             ['pluginname', 'mod_interactivevideo'],
         ],
     ],
-  ];
+];

@@ -35,7 +35,13 @@ class mobile {
      * Returns the interactive video course view for the mobile app.
      *
      * @param mixed $args
-     * @return void
+     *
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     * @throws \require_login_exception
+     * @throws \required_capability_exception
      */
     public static function mobile_module_view($args) {
         $args = (object)$args;
@@ -70,6 +76,7 @@ class mobile {
      * Create token
      *
      * @return string
+     * @throws \dml_exception
      */
     public static function create_token() {
         global $DB;
@@ -83,7 +90,10 @@ class mobile {
      *
      * @param string $token
      * @param int $cmid
+     *
      * @return bool
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function login_after_validate_token($token, $cmid) {
         global $DB;

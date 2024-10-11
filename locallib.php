@@ -29,7 +29,9 @@ class interactivevideo_util {
      * @param int $interactivevideo
      * @param int $contextid
      * @param bool $hascompletion
+     *
      * @return array
+     * @throws dml_exception
      */
     public static function get_items($interactivevideo, $contextid, $hascompletion = false) {
         global $DB, $PAGE;
@@ -50,7 +52,9 @@ class interactivevideo_util {
      *
      * @param int $id
      * @param int $contextid
+     *
      * @return stdClass
+     * @throws dml_exception
      */
     public static function get_item($id, $contextid) {
         global $DB, $PAGE;
@@ -66,7 +70,12 @@ class interactivevideo_util {
      * @param int $id
      * @param int $contextid
      * @param float $timestamp
+     *
      * @return stdClass
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws file_exception
+     * @throws stored_file_creation_exception
      */
     public static function copy_item($id, $contextid, $timestamp) {
         global $DB, $CFG;
@@ -95,6 +104,7 @@ class interactivevideo_util {
      * @param mixed $content
      * @param string $format
      * @param int $contextid
+     *
      * @return mixed
      */
     public static function format_content($content, $format, $contextid) {
@@ -110,7 +120,9 @@ class interactivevideo_util {
      * @param int $interactivevideo
      * @param int $userid
      * @param bool $preview
+     *
      * @return stdClass
+     * @throws dml_exception
      */
     public static function get_progress($interactivevideo, $userid, $preview = false) {
         global $DB;
@@ -154,19 +166,23 @@ class interactivevideo_util {
     /**
      * Save the progress of an interactive video for a user.
      *
-     * @param int $interactivevideo The ID of the interactive video.
-     * @param int $userid The ID of the user.
-     * @param int $completeditems The number of completed items.
+     * @param int $interactivevideo     The ID of the interactive video.
+     * @param int $userid               The ID of the user.
+     * @param int $completeditems       The number of completed items.
      * @param string $completiondetails JSON encoded string of completion details.
-     * @param bool $markdone Whether to mark the item as done.
-     * @param string $type The type of the interactive video.
-     * @param string $details Additional details (optional).
-     * @param int $completed Whether the interactive video is completed (optional, default is 0).
-     * @param float $percentage The completion percentage (optional, default is 0).
-     * @param float $grade The grade achieved (optional, default is 0).
-     * @param int $gradeiteminstance The grade item instance (optional, default is 0).
-     * @param int $xp The experience points earned (optional, default is 0).
+     * @param bool $markdone            Whether to mark the item as done.
+     * @param string $type              The type of the interactive video.
+     * @param string $details           Additional details (optional).
+     * @param int $completed            Whether the interactive video is completed (optional, default is 0).
+     * @param int $percentage           The completion percentage (optional, default is 0).
+     * @param int $grade                The grade achieved (optional, default is 0).
+     * @param int $gradeiteminstance    The grade item instance (optional, default is 0).
+     * @param int $xp                   The experience points earned (optional, default is 0).
+     *
      * @return stdClass The updated progress record.
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     public static function save_progress(
         $interactivevideo,
@@ -286,7 +302,9 @@ class interactivevideo_util {
      * @param int $interactivevideo
      * @param int $group
      * @param int $contextid
+     *
      * @return array
+     * @throws dml_exception
      */
     public static function get_report_data_by_group($interactivevideo, $group, $contextid) {
         global $DB, $OUTPUT, $COURSE, $PAGE;
@@ -331,6 +349,8 @@ class interactivevideo_util {
      * Get all activity types.
      *
      * @return array
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public static function get_all_activitytypes() {
         $subplugins = get_config('mod_interactivevideo', 'enablecontenttypes');
@@ -351,7 +371,7 @@ class interactivevideo_util {
                         !isset($properties['name']) || !isset($properties['class'])
                         || !isset($properties['amdmodule']) || !isset($properties['form'])
                     ) {
-                        return;
+                        return null;
                     }
                     if (!isset($properties['hascompletion'])) {
                         $properties['hascompletion'] = false;
@@ -386,7 +406,10 @@ class interactivevideo_util {
      * @param string $value
      * @param int $contextid
      * @param int $olddraftitemid
+     *
      * @return stdClass
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public static function quick_edit_field($id, $field, $value, $contextid, $olddraftitemid = 0) {
         global $DB, $PAGE, $CFG;
@@ -431,7 +454,9 @@ class interactivevideo_util {
      *
      * @param int $draftid
      * @param string $text
+     *
      * @return void
+     * @throws coding_exception
      */
     public static function file_remove_editor_orphaned_files($draftid, $text) {
         global $CFG, $USER;
@@ -472,7 +497,9 @@ class interactivevideo_util {
      * @param int $userid
      * @param int $activityid
      * @param string $log
+     *
      * @return int
+     * @throws dml_exception
      */
     public static function save_log($interactionid, $courseid, $userid, $activityid, $log) {
         global $DB, $USER;
@@ -494,7 +521,9 @@ class interactivevideo_util {
      * @param int $cmid
      * @param int $annotationid
      * @param int $contextid
+     *
      * @return stdClass
+     * @throws dml_exception
      */
     public static function get_log($userid, $cmid, $annotationid, $contextid) {
         global $DB, $CFG;
@@ -536,7 +565,10 @@ class interactivevideo_util {
      * @param array $userids
      * @param int $annotationid
      * @param int $contextid
+     *
      * @return array
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public static function get_logs_by_userids($userids, $annotationid, $contextid) {
         global $DB, $CFG;
@@ -579,7 +611,11 @@ class interactivevideo_util {
 
     /**
      * Get taught courses
+     *
      * @param int $userid
+     *
+     * @return array
+     * @throws dml_exception
      */
     public static function get_taught_courses($userid) {
         global $DB, $PAGE, $USER;
@@ -613,7 +649,9 @@ class interactivevideo_util {
      * Retrieves the course module by course ID.
      *
      * @param int $courseid The ID of the course.
-     * @return object|null The course module object if found, null otherwise.
+     *
+     * @return array The course module object if found, null otherwise.
+     * @throws dml_exception
      */
     public static function get_cm_by_courseid($courseid) {
         global $DB, $PAGE;
@@ -631,7 +669,11 @@ class interactivevideo_util {
 
     /**
      * Get annotations by course
+     *
      * @param int $courseid
+     *
+     * @return array
+     * @throws dml_exception
      */
     public static function get_annotations_by_course($courseid) {
         global $DB;
@@ -641,6 +683,7 @@ class interactivevideo_util {
 
     /**
      * Import annotations
+     *
      * @param int $fromcourse
      * @param int $tocourse
      * @param int $module
@@ -648,16 +691,19 @@ class interactivevideo_util {
      * @param int $tocm
      * @param array $annotations
      * @param int $contextid
+     *
+     * @return array
+     * @throws dml_exception
      */
     public static function import_annotations($fromcourse, $tocourse, $module, $fromcm, $tocm, $annotations, $contextid) {
         global $DB, $PAGE;
         // Get the old context from cmid field.
-        $annotation = (object) $annotations[0];
+        $annotation = (object)$annotations[0];
         $oldcontextid = $annotation->contextid;
         $PAGE->set_context(context::instance_by_id($contextid));
         $copied = [];
         foreach ($annotations as $annotation) {
-            $annotation = (object) $annotation;
+            $annotation = (object)$annotation;
             $annotation->courseid = $tocourse;
             $annotation->annotationid = $tocm;
             $annotation->cmid = $module;

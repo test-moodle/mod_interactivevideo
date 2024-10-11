@@ -39,7 +39,9 @@ class course_module_viewed extends \core\event\course_module_viewed {
      * @param \stdClass $record
      * @param \cm_info|\stdClass $cm
      * @param \stdClass $course
+     *
      * @return course_module_viewed
+     * @throws \coding_exception
      */
     public static function create_from_record($record, $cm, $course) {
         /** @var course_module_viewed $event */

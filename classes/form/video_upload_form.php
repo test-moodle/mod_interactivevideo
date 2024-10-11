@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace mod_interactivevideo\form;
+
 use moodle_url;
 
 /**
@@ -40,6 +41,8 @@ class video_upload_form extends \core_form\dynamic_form {
 
     /**
      * Checks access for dynamic submission
+     *
+     * @throws \required_capability_exception
      */
     protected function check_access_for_dynamic_submission(): void {
         require_capability('mod/interactivevideo:edit', $this->get_context_for_dynamic_submission());
@@ -60,6 +63,8 @@ class video_upload_form extends \core_form\dynamic_form {
      * Process dynamic submission
      *
      * @return \stdClass
+     * @throws \coding_exception
+     * @throws \moodle_exception
      */
     public function process_dynamic_submission() {
 
@@ -74,7 +79,7 @@ class video_upload_form extends \core_form\dynamic_form {
                 'draft',
                 $fromform->video,
                 'filesize DESC',
-            );
+                );
             $fromform->files = $files;
             $file = reset($files);
             if (!$file) {
@@ -93,6 +98,8 @@ class video_upload_form extends \core_form\dynamic_form {
 
     /**
      * Defines form elements
+     *
+
      */
     public function definition() {
         $mform = &$this->_form;
@@ -120,9 +127,9 @@ class video_upload_form extends \core_form\dynamic_form {
     protected function get_options() {
         global $PAGE;
         $filemanageroptions = [
-            'maxbytes'       => $PAGE->course->maxbytes,
-            'subdirs'        => 0,
-            'maxfiles'       => 1,
+            'maxbytes' => $PAGE->course->maxbytes,
+            'subdirs' => 0,
+            'maxfiles' => 1,
             'accepted_types' => ['html_video', 'html_audio'],
         ];
         return $filemanageroptions;
@@ -133,6 +140,7 @@ class video_upload_form extends \core_form\dynamic_form {
      *
      * @param array $data
      * @param array $files
+     *
      * @return array
      */
     public function validation($data, $files) {
@@ -144,6 +152,7 @@ class video_upload_form extends \core_form\dynamic_form {
      * Get page url for dynamic submission
      *
      * @return \moodle_url
+     * @throws \moodle_exception
      */
     protected function get_page_url_for_dynamic_submission(): \moodle_url {
         return new \moodle_url('/course/modedit.php', [

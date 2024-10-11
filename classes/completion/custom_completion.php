@@ -31,7 +31,9 @@ class custom_completion extends activity_custom_completion {
      * Fetches the completion state for a given completion rule.
      *
      * @param string $rule The completion rule.
+     *
      * @return int The completion state.
+     * @throws \dml_exception
      */
     public function get_state(string $rule): int {
         global $DB;
@@ -104,6 +106,7 @@ class custom_completion extends activity_custom_completion {
      * Returns an associative array of the descriptions of custom completion rules.
      *
      * @return array
+     * @throws \coding_exception
      */
     public function get_custom_rule_descriptions(): array {
         $completionpercentage = $this->cm->customdata['customcompletionrules']['completionpercentage'];

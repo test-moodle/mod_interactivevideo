@@ -28,7 +28,8 @@
  * Return if the plugin supports $feature.
  *
  * @param string $feature Constant representing the feature.
- * @return true | null True if the feature is supported, null otherwise.
+ *
+ * @return true | string True if the feature is supported, null otherwise.
  */
 function interactivevideo_supports($feature) {
     switch ($feature) {
@@ -59,7 +60,8 @@ function interactivevideo_supports($feature) {
  * Mod edit form display options
  *
  * @param mixed $moduleinstance
- * @return void
+ *
+ * @return array
  */
 function interactivevideo_display_options($moduleinstance) {
     $options = [];
@@ -86,9 +88,12 @@ function interactivevideo_display_options($moduleinstance) {
  * in mod_form.php) this function will create a new instance and return the id
  * number of the instance.
  *
- * @param object $moduleinstance An object from the form.
+ * @param object $moduleinstance               An object from the form.
  * @param mod_interactivevideo_mod_form $mform The form.
+ *
  * @return int The id of the newly inserted record.
+ * @throws coding_exception
+ * @throws dml_exception
  */
 function interactivevideo_add_instance($moduleinstance, $mform = null) {
     global $DB, $USER;
@@ -156,7 +161,7 @@ function interactivevideo_add_instance($moduleinstance, $mform = null) {
             'mod_interactivevideo',
             'video',
             0,
-        );
+            );
 
         // Clear the videourl field.
         $DB->set_field('interactivevideo', 'videourl', '', ['id' => $moduleinstance->id]);
@@ -178,9 +183,12 @@ function interactivevideo_add_instance($moduleinstance, $mform = null) {
  * Given an object containing all the necessary data (defined in mod_form.php),
  * this function will update an existing instance with new data.
  *
- * @param object $moduleinstance An object from the form in mod_form.php.
+ * @param object $moduleinstance               An object from the form in mod_form.php.
  * @param mod_interactivevideo_mod_form $mform The form.
+ *
  * @return bool True if successful, false otherwise.
+ * @throws coding_exception
+ * @throws dml_exception
  */
 function interactivevideo_update_instance($moduleinstance, $mform = null) {
     global $DB, $USER;
@@ -242,7 +250,7 @@ function interactivevideo_update_instance($moduleinstance, $mform = null) {
                 'mod_interactivevideo',
                 'video',
                 0,
-            );
+                );
             // Delete the draft area files. This is normally done by the cron job, but we might as well do it now.
             $usercontext = context_user::instance($USER->id);
             $fs = get_file_storage();
@@ -272,7 +280,10 @@ function interactivevideo_update_instance($moduleinstance, $mform = null) {
  * Removes an instance of the mod_interactivevideo from the database.
  *
  * @param int $id Id of the module instance.
+ *
  * @return bool True if successful, false on failure.
+ * @throws coding_exception
+ * @throws dml_exception
  */
 function interactivevideo_delete_instance($id) {
     global $DB;
@@ -313,6 +324,7 @@ function interactivevideo_delete_instance($id) {
  * @param stdClass $course
  * @param stdClass $cm
  * @param stdClass $context
+ *
  * @return string[].
  */
 function interactivevideo_get_file_areas($course, $cm, $context) {
@@ -341,6 +353,7 @@ function interactivevideo_get_file_areas($course, $cm, $context) {
  * @param int $itemid
  * @param string $filepath
  * @param string $filename
+ *
  * @return file_info Instance or null if not found.
  */
 function interactivevideo_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
@@ -353,13 +366,17 @@ function interactivevideo_get_file_info($browser, $areas, $course, $cm, $context
  * @package     mod_interactivevideo
  * @category    files
  *
- * @param stdClass $course The course object.
- * @param stdClass $cm The course module object.
- * @param stdClass $context The mod_interactivevideo's context.
- * @param string $filearea The name of the file area.
- * @param array $args Extra arguments (itemid, path).
+ * @param stdClass $course    The course object.
+ * @param stdClass $cm        The course module object.
+ * @param stdClass $context   The mod_interactivevideo's context.
+ * @param string $filearea    The name of the file area.
+ * @param array $args         Extra arguments (itemid, path).
  * @param bool $forcedownload Whether or not force download.
- * @param array $options Additional options affecting the file serving.
+ * @param array $options      Additional options affecting the file serving.
+ *
+ * @throws coding_exception
+ * @throws moodle_exception
+ * @throws require_login_exception
  */
 function interactivevideo_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $options = []) {
 
@@ -389,8 +406,11 @@ function interactivevideo_pluginfile($course, $cm, $context, $filearea, $args, $
  * This function is called when the context for the page is a mod_interactivevideo module.
  * This is not called by AJAX so it is safe to rely on the $PAGE.
  *
- * @param settings_navigation $settingsnav {@see settings_navigation}
+ * @param settings_navigation $settingsnav      {@see settings_navigation}
  * @param navigation_node $interactivevideonode {@see navigation_node}
+ *
+ * @throws coding_exception
+ * @throws moodle_exception
  */
 function interactivevideo_extend_settings_navigation($settingsnav, $interactivevideonode = null) {
     $page = $settingsnav->get_page();
@@ -427,15 +447,17 @@ function interactivevideo_extend_settings_navigation($settingsnav, $interactivev
  * when printing this activity in a course listing.  See get_array_of_activities() in course/lib.php.
  *
  * @param stdClass $coursemodule The coursemodule object (record).
+ *
  * @return cached_cm_info An object on information that the courses
  *                        will know about (most noticeably, an icon).
+ * @throws dml_exception
  */
 function interactivevideo_get_coursemodule_info($coursemodule) {
     global $DB;
     $dbparams = ['id' => $coursemodule->instance];
     $interactive = $DB->get_record('interactivevideo', $dbparams, '*');
     if (!$interactive) {
-        return false;
+        return null;
     }
 
     $result = new cached_cm_info();
@@ -459,8 +481,10 @@ function interactivevideo_get_coursemodule_info($coursemodule) {
  * Needed by {@see grade_update_mod_grades()}.
  *
  * @param stdClass $moduleinstance Instance object with extra cmidnumber and modname property.
- * @param mixed $grades Null to update all grades, false to delete all grades, or array of user grades.
+ * @param mixed $grades            Null to update all grades, false to delete all grades, or array of user grades.
+ *
  * @return void.
+ * @throws coding_exception
  */
 function interactivevideo_grade_item_update($moduleinstance, $grades = null) {
     global $CFG;
@@ -475,8 +499,8 @@ function interactivevideo_grade_item_update($moduleinstance, $grades = null) {
     $item['itemname'] = clean_param($moduleinstance->name, PARAM_NOTAGS);
     if ($moduleinstance->grade > 0) {
         $item['gradetype'] = GRADE_TYPE_VALUE;
-        $item['grademax']  = $moduleinstance->grade;
-        $item['grademin']  = 0;
+        $item['grademax'] = $moduleinstance->grade;
+        $item['grademin'] = 0;
     } else {
         $item['gradetype'] = GRADE_TYPE_NONE;
     }
@@ -502,7 +526,8 @@ function interactivevideo_grade_item_update($moduleinstance, $grades = null) {
  * Delete grade item for given mod_interactivevideo instance.
  *
  * @param stdClass $moduleinstance Instance object.
- * @return grade_item.
+ *
+ * @return int
  */
 function interactivevideo_grade_item_delete($moduleinstance) {
     global $CFG;
@@ -529,7 +554,10 @@ function interactivevideo_grade_item_delete($moduleinstance) {
  * Needed by {@see grade_update_mod_grades()}.
  *
  * @param stdClass $moduleinstance Instance object with extra cmidnumber and modname property.
- * @param int $userid Update grade of specific user only, 0 means all participants.
+ * @param int $userid              Update grade of specific user only, 0 means all participants.
+ *
+ * @throws coding_exception
+ * @throws dml_exception
  */
 function interactivevideo_update_grades($moduleinstance, $userid = 0) {
     global $CFG;
@@ -547,14 +575,15 @@ function interactivevideo_update_grades($moduleinstance, $userid = 0) {
  * Get user grades for the mod_interactivevideo module.
  *
  * @param stdClass $moduleinstance The module instance object.
- * @param int $userid The user ID (optional).
+ * @param int $userid              The user ID (optional).
+ *
  * @return array The user grades.
+ * @throws dml_exception
  */
 function interactivevideo_get_user_grades($moduleinstance, $userid = 0) {
     global $CFG, $DB;
     require_once($CFG->libdir . '/gradelib.php');
     // Get user grades from the grade_grades table with key as userid.
-    $grades = [];
     if ($userid) {
         $sql = "SELECT g.userid AS userid, g.rawgrade AS rawgrade, g.usermodified AS usermodified
                 FROM {grade_grades} g
@@ -577,7 +606,10 @@ function interactivevideo_get_user_grades($moduleinstance, $userid = 0) {
  * Reset all user grades for the mod_interactivevideo module.
  *
  * @param stdClass $data The module instance object.
+ *
  * @return array The status.
+ * @throws coding_exception
+ * @throws dml_exception
  */
 function interactivevideo_reset_userdata($data) {
     global $DB;
@@ -656,6 +688,8 @@ function interactivevideo_reset_userdata($data) {
  * Get content of the interaction.
  *
  * @param mixed $arg
+ *
+ * @return false|string
  */
 function interactivevideo_output_fragment_getcontent($arg) {
     $prop = json_decode($arg['prop']);

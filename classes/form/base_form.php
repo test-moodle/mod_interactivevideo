@@ -39,6 +39,8 @@ class base_form extends \core_form\dynamic_form {
 
     /**
      * Checks access for dynamic submission
+     *
+     * @throws \required_capability_exception
      */
     protected function check_access_for_dynamic_submission(): void {
         require_capability('mod/interactivevideo:addinstance', $this->get_context_for_dynamic_submission());
@@ -57,6 +59,7 @@ class base_form extends \core_form\dynamic_form {
      * Other forms can use this method to set default data
      *
      * @return \stdClass
+     * @throws \coding_exception
      */
     public function set_data_default() {
         $data = new \stdClass();
@@ -98,13 +101,13 @@ class base_form extends \core_form\dynamic_form {
      * Form definition
      */
     public function definition() {
-        $mform = $this->_form;
     }
 
     /**
      * Pre processing data before saving to database
      *
      * @param \stdClass $data
+     *
      * @return \stdClass
      */
     public function pre_processing_data($data) {
@@ -115,6 +118,7 @@ class base_form extends \core_form\dynamic_form {
      * Process dynamic submission
      *
      * @return \stdClass
+     * @throws \dml_exception
      */
     public function process_dynamic_submission() {
         global $DB;
@@ -138,6 +142,7 @@ class base_form extends \core_form\dynamic_form {
      * Process advanced settings
      *
      * @param \stdClass $data
+     *
      * @return string
      */
     public function process_advanced_settings($data) {
@@ -153,6 +158,8 @@ class base_form extends \core_form\dynamic_form {
     /**
      * Used to set the form elements for the standard fields
      * that are common to all interactions
+     *
+     * @throws \coding_exception
      */
     public function standard_elements() {
         $mform = &$this->_form;
@@ -198,12 +205,12 @@ class base_form extends \core_form\dynamic_form {
             'hidden',
             'timestampassist',
             '<i class="bi bi-stopwatch mr-2"></i>' . get_string('timestamp', 'mod_interactivevideo') . ' ['
-                . $this->optional_param('start', '00:00:00.00', PARAM_TEXT) . ' - '
-                . $this->optional_param(
-                    'end',
-                    '00:00:00.00',
-                    PARAM_TEXT
-                ) . ']',
+            . $this->optional_param('start', '00:00:00.00', PARAM_TEXT) . ' - '
+            . $this->optional_param(
+                'end',
+                '00:00:00.00',
+                PARAM_TEXT
+            ) . ']',
             ['placeholder' => '00:00:00.00']
         );
         $mform->setType('timestampassist', PARAM_TEXT);
@@ -218,7 +225,9 @@ class base_form extends \core_form\dynamic_form {
      *
      * @param string $default
      * @param array $options
+     *
      * @return void
+     * @throws \coding_exception
      */
     public function completion_tracking_field($default, $options = []) {
         $mform = &$this->_form;
@@ -251,7 +260,9 @@ class base_form extends \core_form\dynamic_form {
      * Display options field
      *
      * @param string $default
+     *
      * @return void
+     * @throws \coding_exception
      */
     public function display_options_field($default = 'popup') {
         $mform = &$this->_form;
@@ -273,7 +284,9 @@ class base_form extends \core_form\dynamic_form {
      * XP field
      *
      * @param int $xp default value
+     *
      * @return void
+     * @throws \coding_exception
      */
     public function xp_form_field($xp = 0) {
         $mform = &$this->_form;
@@ -287,10 +300,12 @@ class base_form extends \core_form\dynamic_form {
      * Advanced form fields
      *
      * @param bool $hascompletion if the interaction has completion
-     * @param bool $visibility  if the interaction should be shown on video navigation
-     * @param bool $click if the interaction should be clickable
-     * @param bool $rerun if the interaction should be replayed after completion
+     * @param bool $visibility    if the interaction should be shown on video navigation
+     * @param bool $click         if the interaction should be clickable
+     * @param bool $rerun         if the interaction should be replayed after completion
+     *
      * @return void
+     * @throws \coding_exception
      */
     public function advanced_form_fields($hascompletion, $visibility, $click, $rerun) {
         $mform = &$this->_form;
@@ -385,7 +400,8 @@ class base_form extends \core_form\dynamic_form {
      *
      * @param mixed $data
      * @param mixed $files
-     * @return void
+     *
+     * @return array
      */
     public function validation($data, $files) {
         $errors = [];
@@ -413,6 +429,7 @@ class base_form extends \core_form\dynamic_form {
      * @param string $label
      * @param mixed $opts
      * @param array $attributes
+     *
      * @return void
      */
     public function render_dropdown($name, $label, $opts, $attributes = []) {
@@ -426,6 +443,7 @@ class base_form extends \core_form\dynamic_form {
      * Returns page URL for dynamic submission
      *
      * @return \moodle_url
+     * @throws \moodle_exception
      */
     protected function get_page_url_for_dynamic_submission(): \moodle_url {
         return new \moodle_url('/mod/interactivevideo/view.php', [

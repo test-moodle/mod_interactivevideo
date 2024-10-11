@@ -56,11 +56,11 @@ $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
-    $strsectionname = get_string('sectionname', 'format_'.$course->format);
-    $table->head  = [$strsectionname, get_string('name')];
+    $strsectionname = get_string('sectionname', 'format_' . $course->format);
+    $table->head = [$strsectionname, get_string('name')];
     $table->align = ['left', 'left'];
 } else {
-    $table->head  = [get_string('name')];
+    $table->head = [get_string('name')];
     $table->align = ['left'];
 }
 

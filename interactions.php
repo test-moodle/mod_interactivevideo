@@ -109,7 +109,7 @@ if ($moduleinstance->source == 'url') {
         'video',
         0,
         'filesize DESC',
-    );
+        );
     $file = reset($files);
     $url = moodle_url::make_pluginfile_url(
         $file->get_contextid(),
@@ -132,7 +132,7 @@ $datafortemplate = [
     "canedit" => has_capability('mod/interactivevideo:edit', $modulecontext),
     "completion" => ($attempted ? '<span class="mb-0 border-left border-danger pl-3"><button class="btn btn-sm"
           type="button" data-toggle="popover" data-html="true" data-content=\'' .
-            get_string('interactionscannotbeedited', 'mod_interactivevideo') . '\'>
+        get_string('interactionscannotbeedited', 'mod_interactivevideo') . '\'>
          <i class="bi bi-exclamation-circle-fill text-warning fs-25px"></i></button></span>' : ''),
     "manualcompletion" => 1,
     "settingurl" => has_capability('mod/interactivevideo:edit', $modulecontext)

@@ -29,7 +29,9 @@ class course_module_instance_list_viewed extends \core\event\course_module_insta
      * Create the event from course record.
      *
      * @param \stdClass $course
+     *
      * @return course_module_instance_list_viewed
+     * @throws \coding_exception
      */
     public static function create_from_course(\stdClass $course) {
         $params = [

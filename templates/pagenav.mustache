@@ -27,69 +27,75 @@ Example context (json):
             <i class="{{#darkmode}}text-white{{/darkmode}} bi bi-chevron-left fs-25px"></i>
         </a>
         {{#manualcompletion}}
-        {{{completion}}}
+            {{{completion}}}
         {{/manualcompletion}}
-    {{^manualcompletion}}
-    {{#completion}}
-    <div class="dropdown"
-         title="{{#str}}todo,mod_interactivevideo{{/str}}"
-         data-toggle="tooltip">
-        <button class="btn btn-sm border-0"
-                type="button"
-                id="completiondropdown"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-            <i class="fs-25px bi bi-check-circle{{#completed}}-fill{{/completed}} {{#darkmode}}{{^completed}}text-white{{/completed}}{{/darkmode}} {{#completedpass}}text-success{{/completedpass}}{{#completedfail}}text-danger{{/completedfail}}"></i>
-        </button>
-        <div class="dropdown-menu dropdown-menu-left px-2"
-             aria-labelledby="completiondropdown">{{{completion}}}</div>
+        {{^manualcompletion}}
+            {{#completion}}
+                <div class="dropdown"
+                     title="{{#str}}todo,mod_interactivevideo{{/str}}"
+                     data-toggle="tooltip">
+                    <button class="btn btn-sm border-0"
+                            type="button"
+                            id="completiondropdown"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        <i class="fs-25px bi bi-check-circle{{#completed}}-fill{{/completed}} {{#darkmode}}{{^completed}}text-white{{/completed}}{{/darkmode}} {{#completedpass}}text-success{{/completedpass}}{{#completedfail}}text-danger{{/completedfail}}"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-left px-2"
+                         aria-labelledby="completiondropdown">{{{completion}}}</div>
+                </div>
+            {{/completion}}
+        {{/manualcompletion}}
+        <div class="metadata d-none d-md-block ml-3 {{#darkmode}}text-white{{/darkmode}}"></div>
     </div>
-{{/completion}}
-{{/manualcompletion}}
-<div class="metadata d-none d-md-block ml-3 {{#darkmode}}text-white{{/darkmode}}"></div>
-</div>
-<div class="navigation d-flex align-items-center">
-    {{#viewurl}}
-    <a href="{{{viewurl}}}"
-       title="{{#str}}play,mod_interactivevideo{{/str}}"
-       data-toggle="tooltip"
-       class="btn px-1 btn-sm mr-2 border-0"><i class="bi bi-play-circle fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
-{{/viewurl}}
-{{#interactionsurl}}
-<a href="{{{interactionsurl}}}"
-   title="{{#str}}interactions,mod_interactivevideo{{/str}}"
-   data-toggle="tooltip"
-   class="btn px-1 btn-sm mr-2 border-0"><i class="bi bi-bullseye fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
-{{/interactionsurl}}
-{{#reporturl}}
-<a href="{{{reporturl}}}"
-   title="{{#str}}report,mod_interactivevideo{{/str}}"
-   data-toggle="tooltip"
-   class="btn px-1 btn-sm mr-2 border-0"><i class="bi bi-table fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
-{{/reporturl}}
-{{#settingurl}}
-<a href="{{{settingurl}}}"
-   title="{{#str}}settings{{/str}}"
-   data-toggle="tooltip"
-   class="btn px-1 btn-sm mr-2 border-0"><i class="bi bi-gear fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
-{{/settingurl}}
-{{#backupurl}}
-<a href="{{{backupurl}}}"
-   title="{{#str}}backup{{/str}}"
-   data-toggle="tooltip"
-   class="btn px-1 btn-sm mr-2 border-0"><i class="bi bi-cloud-arrow-up fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
-{{/backupurl}}
-{{#restoreurl}}
-<a href="{{{restoreurl}}}"
-   title="{{#str}}restore{{/str}}"
-   data-toggle="tooltip"
-   class="btn px-1 btn-sm mr-2 border-0"><i class="bi bi-cloud-arrow-down fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
-{{/restoreurl}}
-<span class="ml-2">
-    {{#useravatar}}
-    {{> core/user_menu }}
-{{/useravatar}}
-</span>
-</div>
+    <div class="navigation d-flex align-items-center">
+        {{#viewurl}}
+            <a href="{{{viewurl}}}"
+               title="{{#str}}play,mod_interactivevideo{{/str}}"
+               data-toggle="tooltip"
+               class="btn px-1 btn-sm mr-2 border-0"><i
+                    class="bi bi-play-circle fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
+        {{/viewurl}}
+        {{#interactionsurl}}
+            <a href="{{{interactionsurl}}}"
+               title="{{#str}}interactions,mod_interactivevideo{{/str}}"
+               data-toggle="tooltip"
+               class="btn px-1 btn-sm mr-2 border-0"><i
+                    class="bi bi-bullseye fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
+        {{/interactionsurl}}
+        {{#reporturl}}
+            <a href="{{{reporturl}}}"
+               title="{{#str}}report,mod_interactivevideo{{/str}}"
+               data-toggle="tooltip"
+               class="btn px-1 btn-sm mr-2 border-0"><i
+                    class="bi bi-table fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
+        {{/reporturl}}
+        {{#settingurl}}
+            <a href="{{{settingurl}}}"
+               title="{{#str}}settings{{/str}}"
+               data-toggle="tooltip"
+               class="btn px-1 btn-sm mr-2 border-0"><i
+                    class="bi bi-gear fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
+        {{/settingurl}}
+        {{#backupurl}}
+            <a href="{{{backupurl}}}"
+               title="{{#str}}backup{{/str}}"
+               data-toggle="tooltip"
+               class="btn px-1 btn-sm mr-2 border-0"><i
+                    class="bi bi-cloud-arrow-up fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
+        {{/backupurl}}
+        {{#restoreurl}}
+            <a href="{{{restoreurl}}}"
+               title="{{#str}}restore{{/str}}"
+               data-toggle="tooltip"
+               class="btn px-1 btn-sm mr-2 border-0"><i
+                    class="bi bi-cloud-arrow-down fs-25px {{#darkmode}}text-white{{/darkmode}} "></i></a>
+        {{/restoreurl}}
+        <span class="ml-2">
+            {{#useravatar}}
+                {{> core/user_menu }}
+            {{/useravatar}}
+        </span>
+    </div>
 </div>

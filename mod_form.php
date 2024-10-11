@@ -29,6 +29,8 @@ class mod_interactivevideo_mod_form extends moodleform_mod {
 
     /**
      * Defines forms elements
+     *
+     * @throws coding_exception
      */
     public function definition() {
         global $CFG, $PAGE, $USER;
@@ -46,7 +48,7 @@ class mod_interactivevideo_mod_form extends moodleform_mod {
                 'video',
                 0,
                 'filesize DESC',
-            );
+                );
             $file = reset($files);
             if ($file) {
                 $url = moodle_url::make_pluginfile_url(
@@ -217,8 +219,8 @@ class mod_interactivevideo_mod_form extends moodleform_mod {
         $mform->addElement(
             'html',
             '<div class="form-group row fitem"><div class="col-md-12 col-form-label d-flex pb-0 pr-md-0">'
-                . get_string('appearanceandbehaviorsettings', 'mod_interactivevideo') . '</div></div>',
-        );
+            . get_string('appearanceandbehaviorsettings', 'mod_interactivevideo') . '</div></div>',
+            );
 
         // Use distraction-free mode.
         $mform->addElement(
@@ -376,8 +378,12 @@ class mod_interactivevideo_mod_form extends moodleform_mod {
 
     /**
      * Custom validation should be added here
+     *
      * @param array $data
      * @param array $files
+     *
+     * @return array
+     * @throws coding_exception
      */
     public function validation($data, $files) {
         $errors = [];
@@ -440,6 +446,7 @@ class mod_interactivevideo_mod_form extends moodleform_mod {
 
     /**
      * Custom data should be added here
+     *
      * @param array $defaultvalues
      */
     public function data_preprocessing(&$defaultvalues) {
@@ -495,6 +502,7 @@ class mod_interactivevideo_mod_form extends moodleform_mod {
      * Custom completion rules should be added here
      *
      * @return array Contains the names of the added form elements
+     * @throws coding_exception
      */
     public function add_completion_rules() {
         $mform = $this->_form;
@@ -521,7 +529,9 @@ class mod_interactivevideo_mod_form extends moodleform_mod {
      * Determines if completion is enabled for this module.
      *
      * @param array $data
+     *
      * @return bool
+    
      */
     public function completion_rule_enabled($data) {
         return !empty($data['completionpercentageenabled']) && $data['completionpercentage'] > 0;
@@ -529,6 +539,7 @@ class mod_interactivevideo_mod_form extends moodleform_mod {
 
     /**
      * Custom data should be added here
+     *
      * @param stdClass $data
      */
     public function data_postprocessing($data) {

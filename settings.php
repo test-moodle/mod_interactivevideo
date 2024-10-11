@@ -36,12 +36,12 @@ if ($ADMIN->fulltree) {
         get_string('enablecontenttypes_desc', 'mod_interactivevideo'),
         $contenttypes,
         $contenttypes,
-    ));
+        ));
     // Textarea for defining available font families.
     $settings->add(new admin_setting_configtextarea(
         'mod_interactivevideo/fontfamilies',
         get_string('fontfamilies', 'mod_interactivevideo'),
         get_string('fontfamilies_desc', 'mod_interactivevideo'),
         '',
-    ));
+        ));
 }

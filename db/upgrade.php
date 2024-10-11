@@ -29,10 +29,10 @@
  * Execute the plugin upgrade steps from the given old version.
  *
  * @param int $oldversion
+ *
  * @return bool
+ * @throws Exception
  */
 function xmldb_interactivevideo_upgrade($oldversion) {
-    global $DB;
-    $dbman = $DB->get_manager();
     return true;
 }

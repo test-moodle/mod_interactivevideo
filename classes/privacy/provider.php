@@ -32,6 +32,7 @@ class provider implements null_provider {
      * file to explain why this plugin stores no data.
      *
      * @return  string
+
      */
     public static function get_reason(): string {
         return 'privacy:metadata';
